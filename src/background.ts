@@ -11,8 +11,7 @@ import {IApiResponse, IChangelogEntry, IExtensionDeveloperInformation} from "./i
 // Set an alarm to fire every hour
 browser.alarms.create("hourlyAlarm", { periodInMinutes: ALARM_INTERVAL_MIN });
 
-// TODO: replicate this action https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/browserAction/setBadgeBackgroundColor
-// browser.action.setBadgeBackgroundColor({ color: RED_BADGE_COLOR });
+browser.browserAction.setBadgeBackgroundColor({ color: RED_BADGE_COLOR });
 
 // Listen for the alarm and execute some action
 browser.alarms.onAlarm.addListener(() => {
@@ -51,7 +50,7 @@ async function updateDeveloperData() {
       //  to diverge from the chrome version in storage format?
       // TODO: handle other locales
       successfulExtensionIds.push({
-        extension_id: extensionId,
+        extension_id: addonInfo.id, // use AMO id instead of local id
         extension_name: addonInfo.name['en-US'],
         // author IDs as string list "(x,x,x)"
         developer_name: addonInfo.authors.map(u => u.id).join(', '),
@@ -101,9 +100,8 @@ async function updateDeveloperData() {
   if (newChangelogData.length > 0) {
     browser.storage.local.set({ [CHANGELOG_KEY]: updatedChangelogData });
   }
-
-  // TODO: replicate this
-  // browser.action.setBadgeText({ text: badgeText });
+  
+  browser.browserAction.setBadgeText({ text: badgeText });
 
   browser.storage.local.set({ [PREVIOUS_API_DATA_KEY]: currentApiData });
 

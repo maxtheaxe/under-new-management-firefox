@@ -40,7 +40,7 @@ const Popup = () => {
 
     await updateChangelogData();
 
-    browser.action.setBadgeText({ text: "" });
+    browser.browserAction.setBadgeText({ text: "" });
   }
 
   return (
