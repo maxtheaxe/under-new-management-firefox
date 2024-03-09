@@ -16,31 +16,31 @@ const Popup = () => {
   useEffect(() => {
     updateData();
 
-    chrome.storage.local.onChanged.addListener(updateData);
+    browser.storage.local.onChanged.addListener(updateData);
   }, []);
 
   async function updateData() {
     updateChangelogData();
 
     const lastUpdatedData: ILastUpdatedData | null =
-      (await chrome.storage.local.get(LAST_CHECK_KEY))[LAST_CHECK_KEY] ?? null;
+      (await browser.storage.local.get(LAST_CHECK_KEY))[LAST_CHECK_KEY] ?? null;
 
     setLastUpdatedData(lastUpdatedData);
   }
 
   async function updateChangelogData() {
     const changelogResult: IChangelogEntry[] =
-      (await chrome.storage.local.get(CHANGELOG_KEY))[CHANGELOG_KEY] ?? [];
+      (await browser.storage.local.get(CHANGELOG_KEY))[CHANGELOG_KEY] ?? [];
 
     setChangelogData(changelogResult);
   }
 
   async function clearChangelog() {
-    await chrome.storage.local.set({ [CHANGELOG_KEY]: [] });
+    await browser.storage.local.set({ [CHANGELOG_KEY]: [] });
 
     await updateChangelogData();
 
-    chrome.action.setBadgeText({ text: "" });
+    browser.action.setBadgeText({ text: "" });
   }
 
   return (
@@ -66,7 +66,7 @@ const Popup = () => {
         </div>
 
         <button
-          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded border border-red-700"
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded border border-red-700"
           onClick={() => clearChangelog()}
         >
           CLEAR
