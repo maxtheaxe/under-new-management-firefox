@@ -1,13 +1,12 @@
 {
   "name": "Under New Management",
   "version": "0.0.1",
-  "description": "Detect when your installed Chrome extensions have changed owners.",
-  "manifest_version": 3,
+  "description": "Detect when your installed browser extensions have changed owners.",
+  "manifest_version": 2,
   "background": {
-    "service_worker": "background.ts",
-    "type": "module"
+    "scripts": ["background.ts"]
   },
-  "action": {
+  "browser_action": {
     "default_popup": "popup/index.html"
   },
   "permissions": ["alarms", "management", "storage"],

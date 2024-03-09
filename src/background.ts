@@ -6,42 +6,73 @@ import {
   PREVIOUS_API_DATA_KEY,
   RED_BADGE_COLOR,
 } from "./consts";
-import { IApiResponse, IChangelogEntry } from "./interfaces";
+import {IApiResponse, IChangelogEntry, IExtensionDeveloperInformation} from "./interfaces";
 
 // Set an alarm to fire every hour
-chrome.alarms.create("hourlyAlarm", { periodInMinutes: ALARM_INTERVAL_MIN });
+browser.alarms.create("hourlyAlarm", { periodInMinutes: ALARM_INTERVAL_MIN });
 
-chrome.action.setBadgeBackgroundColor({ color: RED_BADGE_COLOR });
+browser.browserAction.setBadgeBackgroundColor({ color: RED_BADGE_COLOR });
 
 // Listen for the alarm and execute some action
-chrome.alarms.onAlarm.addListener(() => {
+browser.alarms.onAlarm.addListener(() => {
   updateDeveloperData();
 });
 
 async function updateDeveloperData() {
-  const installedExtensionIds = (await chrome.management.getAll()).map(
+  const installedExtensionIds = (await browser.management.getAll()).map(
     (x) => x.id
   );
 
-  const response = await fetch(
-    `https://api.extensionboost.com/v1/developer?extension_ids=${installedExtensionIds.join(
-      ","
-    )}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const failedExtensionIds = [];
+  const successfulExtensionIds: IExtensionDeveloperInformation[] = [];
+  const notFoundExtensionIds = [];
 
-  if (response.status !== 200) {
-    return;
+  for (const extensionId of installedExtensionIds) {
+    const response = await fetch(
+      `https://addons.mozilla.org/api/v5/addons/addon/${extensionId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const addonInfo = await response.json();
+
+    if (response.status === 404) {
+      notFoundExtensionIds.push(extensionId);
+    } else if (response.status !== 200) {
+      failedExtensionIds.push(extensionId);
+    } else {
+      // build author name strings
+      // (sticking with save format of upstream chrome extension)
+      // TODO: is this the best format for storing names? do we (I) want
+      //  to diverge from the chrome version in storage format?
+      // TODO: handle other locales
+      successfulExtensionIds.push({
+        extension_id: addonInfo.id, // use AMO id instead of local id
+        extension_name: addonInfo.name['en-US'],
+        // author IDs as string list "(x,x,x)"
+        developer_name: addonInfo.authors.map(u => u.id).join(', '),
+        developer_website: addonInfo.homepage?.url['en-US'],
+        developer_email: addonInfo.support_email?.['en-US'],
+        // author display names as string list "(x,x,x)"
+        offered_by_name: addonInfo.authors.map(u => u.name).join(', '),
+      });
+
+    }
   }
 
-  const currentApiData: IApiResponse = await response.json();
+  const currentApiData: IApiResponse = {
+    ignored_extension_ids: failedExtensionIds,
+    matched_extension_data: successfulExtensionIds,
+    unmatched_extension_ids: notFoundExtensionIds,
+  };
+
+  console.log("currentApiData: ", currentApiData);
 
   const previousApiData: IApiResponse = (
-    await chrome.storage.local.get(PREVIOUS_API_DATA_KEY)
+    await browser.storage.local.get(PREVIOUS_API_DATA_KEY)
   )[PREVIOUS_API_DATA_KEY] ?? {
     unmatched_extension_ids: [],
     ignored_extension_ids: [],
@@ -49,7 +80,7 @@ async function updateDeveloperData() {
   };
 
   const changelogData: IChangelogEntry[] =
-    (await chrome.storage.local.get(CHANGELOG_KEY))[CHANGELOG_KEY] ?? [];
+    (await browser.storage.local.get(CHANGELOG_KEY))[CHANGELOG_KEY] ?? [];
 
   const newChangelogData = generateNewChangelogEntries(
     previousApiData,
@@ -67,14 +98,14 @@ async function updateDeveloperData() {
   }
 
   if (newChangelogData.length > 0) {
-    chrome.storage.local.set({ [CHANGELOG_KEY]: updatedChangelogData });
+    browser.storage.local.set({ [CHANGELOG_KEY]: updatedChangelogData });
   }
+  
+  browser.browserAction.setBadgeText({ text: badgeText });
 
-  chrome.action.setBadgeText({ text: badgeText });
+  browser.storage.local.set({ [PREVIOUS_API_DATA_KEY]: currentApiData });
 
-  chrome.storage.local.set({ [PREVIOUS_API_DATA_KEY]: currentApiData });
-
-  chrome.storage.local.set({
+  browser.storage.local.set({
     [LAST_CHECK_KEY]: {
       timestamp: new Date().toISOString(),
     },

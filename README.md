@@ -4,9 +4,9 @@
 
 **Detect when your extensions have changed owners**
 
-Intermittenty checks your installed extensions to see if the developer information listed on the Chrome Web Store has changed. If anything is different, the extension icon will display a red badge, alerting you to the change.
+Intermittenty checks your installed extensions to see if the developer information listed on AMO ([addons.mozilla.org](https://addons.mozilla.org)) has changed. If anything is different, the extension icon will display a red badge, alerting you to the change.
 
-Created by [Matt Frisbie](https://www.mattfriz.com/)
+Created by [Matt Frisbie](https://www.mattfriz.com/), modified for Firefox by [Max Perrello](https://max.bio)
 
 Media:
 
@@ -26,22 +26,22 @@ Under New Management gives users notice of the change of ownership, giving them 
 
 ## Installation
 
-Install here: [https://chromewebstore.google.com/detail/under-new-management/jppepdecgemgbgnjnnfjcmanlleioikj](https://chromewebstore.google.com/detail/under-new-management/jppepdecgemgbgnjnnfjcmanlleioikj?hl=en&authuser=0)
+Install here: *soon*
 
 OR
 
-Download a [prebuilt release](https://github.com/classvsoftware/under-new-management/releases), unpack the .zip file, and load the `dist` directory into Chrome.
+Download a [prebuilt release](https://github.com/maxtheaxe/under-new-management-firefox/releases), unpack the .zip file, and load the `dist` directory into Firefox.
 
 ## Building from source
 
 **Under New Management** uses Parcel, React, Typescript, and TailwindCSS
 
-`yarn install` to install dependencies
+`npm install` to install dependencies
 
-`yarn start` to run locally
+`npm run start` to run locally
 
-`yarn build` to build a release
+`npm run build` to build a release
 
 ## Why does this need an external server?
 
-Browsers have special rules about modifying extension marketplace domains. For example, you cannot set `declarative_net_request` rules for `chromewebstore.google.com`. Therefore, this extension delegates the developer info checking to the [ExBoost](https://extensionboost.com) API server.
+It doesn't. It queries AMO directly and your data never goes anywhere else.

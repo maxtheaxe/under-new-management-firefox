@@ -22,3 +22,12 @@ export interface IChangelogEntry {
 export interface ILastUpdatedData {
   timestamp: string;
 }
+
+export interface ExtensionData {
+  developer_email: string,
+  developer_name: string,
+  developer_website: string,
+  extension_id: string,
+  extension_name: string,
+  offered_by_name: string
+}
