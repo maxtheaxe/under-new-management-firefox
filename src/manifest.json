@@ -1,6 +1,6 @@
 {
   "name": "Under New Management",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Detect when your installed browser extensions have changed owners.",
   "manifest_version": 2,
   "background": {

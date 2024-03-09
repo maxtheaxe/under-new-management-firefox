@@ -1,6 +1,6 @@
 {
   "name": "under-new-management",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Early warning system for acquired extensions",
   "scripts": {
     "start": "parcel watch src/manifest.json --host localhost --config @parcel/config-webextension",
