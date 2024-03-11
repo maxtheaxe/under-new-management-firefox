@@ -26,7 +26,7 @@ Under New Management gives users notice of the change of ownership, giving them 
 
 ## Installation
 
-Install here: *soon*
+Install here: https://addons.mozilla.org/en-US/firefox/addon/under-new-management/
 
 OR
 
