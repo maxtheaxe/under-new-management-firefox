@@ -12,7 +12,8 @@ export default defineBackground(() => {
   // Set an alarm to fire every hour
   browser.alarms.create("hourlyAlarm", { periodInMinutes: ALARM_INTERVAL_MIN });
 
-  // (browser.action ?? browser.browserAction).setBadgeBackgroundColor({ color: RED_BADGE_COLOR });
+  // TODO: verify default color of badge
+  // browser.action.setBadgeBackgroundColor({ color: RED_BADGE_COLOR });
 
   // Listen for the alarm and execute some action
   browser.alarms.onAlarm.addListener(() => {
@@ -102,7 +103,7 @@ export default defineBackground(() => {
       browser.storage.local.set({ [CHANGELOG_KEY]: updatedChangelogData });
     }
 
-    browser.browserAction.setBadgeText({ text: badgeText });
+    browser.action.setBadgeText({ text: badgeText });
 
     browser.storage.local.set({ [PREVIOUS_API_DATA_KEY]: currentApiData });
 

@@ -2,7 +2,7 @@ import { defineConfig } from "wxt";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
-  extensionApi: "webextension-polyfill",
+  extensionApi: "chrome",
   modules: ["@wxt-dev/module-react"],
   srcDir: "src",
   entrypointsDir: "entrypoints",
