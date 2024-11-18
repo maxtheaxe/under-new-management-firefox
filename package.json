@@ -1,5 +1,5 @@
 {
-  "name": "under-new-management",
+  "name": "extension-ownership-monitor",
   "description": "early warning system for acquired extensions",
   "version": "0.1.0",
   "type": "module",

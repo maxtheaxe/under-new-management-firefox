@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CHANGELOG_KEY, LAST_CHECK_KEY } from "@/utils/consts.ts";
 import { IChangelogEntry, ILastUpdatedData } from "@/utils/interfaces.ts";
-import logo from "../../public/logo.png";
+import logo from "../../public/eom-logo128.png";
 import Diff from "./Diff";
 import "./style.css";
 

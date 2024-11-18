@@ -8,12 +8,12 @@ export default defineConfig({
   entrypointsDir: "entrypoints",
   manifestVersion: 3,
   manifest: {
-    name: "Under New Management",
+    name: "extension ownership monitor",
     permissions: ["alarms", "management", "storage"],
     icons: {
-      "16": "logo16.png",
-      "48": "logo48.png",
-      "128": "logo128.png"
+      "16": "eom-logo16.png",
+      "48": "eom-logo48.png",
+      "128": "eom-logo128.png"
     },
     action: {
       "default_popup": "popup/index.html"

@@ -9,15 +9,15 @@ import {
 import {IApiResponse, IChangelogEntry, IExtensionDeveloperInformation} from "../utils/interfaces";
 
 export default defineBackground(() => {
-  // Set an alarm to fire every hour
-  browser.alarms.create("hourlyAlarm", { periodInMinutes: ALARM_INTERVAL_MIN });
+  // set an alarm to fire once per day (https://stackoverflow.com/a/44415814/4513452)
+  browser.alarms.create("dailyExtensionAlarm", { periodInMinutes: ALARM_INTERVAL_MIN });
 
-  // TODO: verify default color of badge
-  // browser.action.setBadgeBackgroundColor({ color: RED_BADGE_COLOR });
-
-  // Listen for the alarm and execute some action
-  browser.alarms.onAlarm.addListener(() => {
-    updateDeveloperData();
+  // listen for the alarm and execute some action
+  browser.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === "dailyExtensionAlarm") {
+      console.log("checking browser extensions for ownership changes...");
+      updateDeveloperData();
+    }
   });
 
   async function updateDeveloperData() {
