@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { CHANGELOG_KEY, LAST_CHECK_KEY } from "../consts";
-import { IChangelogEntry, ILastUpdatedData } from "../interfaces";
-import logo from "../logo.png";
+import { CHANGELOG_KEY, LAST_CHECK_KEY } from "@/utils/consts.ts";
+import { IChangelogEntry, ILastUpdatedData } from "@/utils/interfaces.ts";
+import logo from "../../public/logo.png";
 import Diff from "./Diff";
-import "./popup.css";
+import "./style.css";
 
 const Popup = () => {
   const [changelogData, setChangelogData] = useState<IChangelogEntry[] | null>(
@@ -40,7 +40,7 @@ const Popup = () => {
 
     await updateChangelogData();
 
-    browser.browserAction.setBadgeText({ text: "" });
+    await browser.browserAction.setBadgeText({ text: "" });
   }
 
   return (

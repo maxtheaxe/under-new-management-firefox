@@ -4,3 +4,7 @@ dist/
 releases/
 .idea/
 *.zip
+.output/
+.wxt/
+.env
+.env.publish
