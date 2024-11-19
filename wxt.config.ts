@@ -21,7 +21,6 @@ export default defineConfig({
     vite: () => ({
       css: {
         // ensures PostCSS processes the CSS
-        //
         postcss: "./postcss.config.js",
       },
     })
