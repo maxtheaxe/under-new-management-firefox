@@ -1,4 +1,4 @@
-# ![extension ownership monitor logo](/other_assets/eom-logo32.png) extension ownership monitor
+# ![extension ownership monitor logo](/other_assets/logo-32.png) extension ownership monitor
 
 **Detect when your extensions have changed owners**
 
