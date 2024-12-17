@@ -45,9 +45,20 @@ const Popup = () => {
 
   return (
     <div className="m-8 font-light flex flex-col items-stretch gap-8">
-      <div className="flex flex-row gap-8 items-start">
-        <img className="w-14 rounded-xl overflow-hidden" src={logo}></img>
+      <div className="flex flex-row gap-3 items-start">
+        <img
+            className="w-14 rounded-xl overflow-hidden cursor-pointer"
+            src={logo}
+            onClick={() => (open("https://github.com/maxtheaxe/under-new-management-firefox"))}
+        ></img>
         <div className="flex flex-col flex-grow">
+          <span
+              className="text-red-500 mb-2 cursor-pointer"
+              onClick={() => (open("https://github.com/maxtheaxe/under-new-management-firefox#is-this-a-copy-of-under-new-management"))}
+              title={"click here!"}
+          >
+            visit github to read about the recent branding change
+          </span>
           <h1 className="text-blue-700 text-2xl">
             Extension Developer Changelog
           </h1>
@@ -55,30 +66,37 @@ const Popup = () => {
             <span>
               Last updated:{" "}
               {lastUpdatedData
-                ? `${new Date(
-                    lastUpdatedData.timestamp
+                  ? `${new Date(
+                      lastUpdatedData.timestamp
                   ).toLocaleDateString()} ${new Date(
-                    lastUpdatedData.timestamp
+                      lastUpdatedData.timestamp
                   ).toLocaleTimeString()}`
-                : ""}
+                  : ""}
             </span>
           </div>
         </div>
 
         <button
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded border border-red-700"
-          onClick={() => clearChangelog()}
+            className="bg-slate-800 hover:bg-slate-950 text-white font-bold py-2 px-4 rounded border border-slate-950"
+            onClick={() => (open("https://github.com/maxtheaxe/under-new-management-firefox"))}
+        >
+          GITHUB
+        </button>
+
+        <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded border border-red-700"
+            onClick={() => clearChangelog()}
         >
           CLEAR
         </button>
       </div>
 
       {changelogData && changelogData.length > 0 ? (
-        changelogData.map((entry: IChangelogEntry) => (
-          <Diff obj1={entry.before} obj2={entry.after}></Diff>
-        ))
+          changelogData.map((entry: IChangelogEntry) => (
+              <Diff obj1={entry.before} obj2={entry.after}></Diff>
+          ))
       ) : (
-        <span>No changes detected.</span>
+          <span>No changes detected.</span>
       )}
     </div>
   );

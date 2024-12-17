@@ -44,6 +44,6 @@ Download a [prebuilt release](https://github.com/maxtheaxe/under-new-management-
 
 ## Is this a copy of Under New Management?
 
-It's a fork, and was the original version of the extension (UNM) on firefox. I decided to continue maintaining it for those who don't want to send their extension data to the owner's server. Big thanks to them for developing the original, but especially given that [they run a browser extension advertising network](https://www.extensionboost.com), I'd rather not take the risk.
+It's a fork, and was the original port of the extension (UNM) on firefox. I decided to continue maintaining it for those who don't want to send their extension data to the owner's server. Big thanks to them for developing the original, but especially given that [they run a browser extension advertising network](https://www.extensionboost.com), I'd rather not take the risk.
 
 You'll notice that [this fork originally used the `under-new-management` slug on AMO](https://archive.is/veeJD). That will be changing shortly, as I intend to hand it over to the maintainer of UNM.
