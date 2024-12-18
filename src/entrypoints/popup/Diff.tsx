@@ -1,15 +1,34 @@
 import React from "react";
+import {
+  IExtensionDeveloperInformation
+} from "@/utils/interfaces";
 
-const Diff = ({ obj1, obj2 }) => {
+interface DiffProps {
+  obj1: IExtensionDeveloperInformation;
+  obj2: IExtensionDeveloperInformation;
+}
+
+interface DiffResult {
+  added: Partial<IExtensionDeveloperInformation>;
+  removed: Partial<IExtensionDeveloperInformation>;
+  unchanged: Partial<IExtensionDeveloperInformation>;
+}
+
+
+const Diff = ({ obj1, obj2 }: DiffProps) => {
   // Function to compare objects and find differences
-  const findDifferences = (obj1, obj2) => {
-    let diff = {
+  const findDifferences = (
+      obj1: IExtensionDeveloperInformation,
+      obj2: IExtensionDeveloperInformation
+  ) => {
+    let diff: DiffResult = {
       added: {},
       removed: {},
       unchanged: {},
     };
 
-    Object.keys(obj1).forEach((key) => {
+    (Object.keys(obj1) as (
+        keyof IExtensionDeveloperInformation)[]).forEach((key) => {
       if (!obj2.hasOwnProperty(key)) {
         diff.removed[key] = obj1[key];
       } else if (obj1[key] === obj2[key]) {
@@ -17,7 +36,8 @@ const Diff = ({ obj1, obj2 }) => {
       }
     });
 
-    Object.keys(obj2).forEach((key) => {
+    (Object.keys(obj2) as (
+        keyof IExtensionDeveloperInformation)[]).forEach((key) => {
       if (!obj1.hasOwnProperty(key)) {
         diff.added[key] = obj2[key];
       } else if (obj1[key] !== obj2[key]) {
@@ -40,12 +60,14 @@ const Diff = ({ obj1, obj2 }) => {
         <pre className="text-wrap">
           {Object.keys(differences.removed).map((key) => (
             <div key={key} className="text-red-500">
-              {key}: {differences.removed[key] ?? "null"}
+              {key}: {differences.removed[key as keyof
+                IExtensionDeveloperInformation] ?? "null"}
             </div>
           ))}
           {Object.keys(differences.unchanged).map((key) => (
             <div key={key} className="text-gray-500">
-              {key}: {differences.unchanged[key] ?? "null"}
+              {key}: {differences.unchanged[key as keyof
+                IExtensionDeveloperInformation] ?? "null"}
             </div>
           ))}
         </pre>
@@ -55,12 +77,14 @@ const Diff = ({ obj1, obj2 }) => {
         <pre className="text-wrap">
           {Object.keys(differences.added).map((key) => (
             <div key={key} className="text-green-500">
-              {key}: {differences.added[key] ?? "null"}
+              {key}: {differences.added[key as keyof
+                IExtensionDeveloperInformation] ?? "null"}
             </div>
           ))}
           {Object.keys(differences.unchanged).map((key) => (
             <div key={key} className="text-gray-500">
-              {key}: {differences.unchanged[key] ?? "null"}
+              {key}: {differences.unchanged[key as keyof
+                IExtensionDeveloperInformation] ?? "null"}
             </div>
           ))}
         </pre>

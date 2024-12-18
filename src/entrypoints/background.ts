@@ -5,14 +5,13 @@ import {
   CHANGELOG_KEY,
   LAST_CHECK_KEY,
   PREVIOUS_API_DATA_KEY,
-  RED_BADGE_COLOR,
-} from "../utils/consts";
+} from "@/utils/consts";
 import {
   ChangelogData,
   IApiResponse,
   IChangelogEntry,
   IExtensionDeveloperInformation
-} from "../utils/interfaces";
+} from "@/utils/interfaces";
 
 /**
  * Sets up a daily alarm and listener, executes a
@@ -55,6 +54,8 @@ export async function extensionLookup(
   const successfulExtensionIds: IExtensionDeveloperInformation[] = [];
   const notFoundExtensionIds = [];
 
+  // TODO: switch to AMO API v4 (which is frozen, v5 could technically change)
+  //  https://mozilla.github.io/addons-server/topics/api/v4_frozen/addons.html#detail
   for (const extensionId of installedExtensionIds) {
     const response = await fetch(
       `${apiEndpoint}${extensionId}`,
@@ -88,6 +89,8 @@ export async function extensionLookup(
         developer_name: addonInfo.authors.map(u => u.id).join(', '),
         developer_website: addonInfo.homepage?.url['en-US'],
         developer_email: addonInfo.support_email?.['en-US'],
+        // TODO: potentially swap to ID (but that that point,
+        //  should change schema altogether and break w chrome)
         // author display names as string list "(x,x,x)"
         // @ts-ignore
         offered_by_name: addonInfo.authors.map(u => u.name).join(', '),

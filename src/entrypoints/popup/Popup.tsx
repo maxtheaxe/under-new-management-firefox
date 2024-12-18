@@ -10,7 +10,7 @@ const Popup = () => {
     null
   );
   const [lastUpdatedData, setLastUpdatedData] = useState<
-    IChangelogEntry[] | null
+    ILastUpdatedData | null
   >(null);
 
   useEffect(() => {
