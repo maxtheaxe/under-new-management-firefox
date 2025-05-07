@@ -208,3 +208,81 @@ describe("extensionLookup", () => {
         );
     });
 });
+
+describe("handleChangelog", () => {
+    it("should handle developer name changes", async () => {
+        // Arrange
+        const oldData = {
+            ignored_extension_ids: [],
+            matched_extension_data: [
+                {
+                    extension_id: "a",
+                    extension_name: "dummy",
+                    developer_name: "dummy",
+                    offered_by_name: "dummy",
+                },
+            ],
+            unmatched_extension_ids: [],
+        };
+
+        const newResponse = {
+            ignored_extension_ids: [],
+            matched_extension_data: [
+                {
+                    extension_id: "a",
+                    extension_name: "dummy",
+                    developer_name: "different",
+                    offered_by_name: "dummy",
+                    developer_website: undefined,
+                    developer_email: undefined,
+                },
+            ],
+            unmatched_extension_ids: [],
+        };
+
+        await browser.storage.local.set({
+            [PREVIOUS_API_DATA_KEY]: oldData,
+        });
+
+        // Act
+        const result = await background.handleChangelog(newResponse);
+
+        // Assert
+        expect(result.newLength).toBe(1);
+        expect(result.updatedData[0].before.developer_name).toBe(
+            oldData.matched_extension_data[0].developer_name,
+        );
+        expect(result.updatedData[0].after.developer_name).toBe(
+            newResponse.matched_extension_data[0].developer_name,
+        );
+    });
+
+    it("should ignore extensions with no changes", async () => {
+        // Arrange
+        const data = {
+            ignored_extension_ids: [],
+            matched_extension_data: [
+                {
+                    extension_id: "a",
+                    extension_name: "dummy",
+                    developer_name: "dummy",
+                    offered_by_name: "dummy",
+                    developer_website: undefined,
+                    developer_email: undefined,
+                },
+            ],
+            unmatched_extension_ids: [],
+        };
+
+        await browser.storage.local.set({
+            [PREVIOUS_API_DATA_KEY]: data,
+        });
+
+        // Act
+        const result = await background.handleChangelog(data);
+
+        // Assert
+        expect(result.newLength).toBe(0);
+        expect(result.updatedData).toHaveLength(0);
+    });
+});
