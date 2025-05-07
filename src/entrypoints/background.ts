@@ -66,9 +66,6 @@ export async function extensionLookup(
       }
     );
 
-    // TODO: add proper typing for AMO responses (see: ts-ignore below)
-    const addonInfo = await response.json();
-
     if (response.status === 404) {
       notFoundExtensionIds.push(extensionId);
     } else if (response.status !== 200) {
@@ -76,6 +73,8 @@ export async function extensionLookup(
       //  different problems (e.g. rate limit, etc.)
       failedExtensionIds.push(extensionId);
     } else {
+      // TODO: add proper typing for AMO responses (see: ts-ignore below)
+      const addonInfo = await response.json();
       // build author name strings
       // (sticking with save format of upstream chrome extension)
       // TODO: is this the best format for storing names? do we (I) want

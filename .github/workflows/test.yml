@@ -1,0 +1,17 @@
+name: Run tests
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: true
+      - name: Run tests
+        run: pnpm test
