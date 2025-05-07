@@ -72,28 +72,33 @@ export async function extensionLookup(
       // TODO: add handling for lookups caused by
       //  different problems (e.g. rate limit, etc.)
       failedExtensionIds.push(extensionId);
-    } else {
+    } else { // valid response
       // TODO: add proper typing for AMO responses (see: ts-ignore below)
       const addonInfo = await response.json();
-      // build author name strings
-      // (sticking with save format of upstream chrome extension)
-      // TODO: is this the best format for storing names? do we (I) want
-      //  to diverge from the chrome version in storage format?
-      // TODO: handle other locales
-      successfulExtensionIds.push({
-        extension_id: addonInfo.id, // use AMO id instead of local id
-        extension_name: addonInfo.name['en-US'],
-        // author IDs as string list "(x,x,x)"
-        // @ts-ignore
-        developer_name: addonInfo.authors.map(u => u.id).join(', '),
-        developer_website: addonInfo.homepage?.url['en-US'],
-        developer_email: addonInfo.support_email?.['en-US'],
-        // TODO: potentially swap to ID (but that that point,
-        //  should change schema altogether and break w chrome)
-        // author display names as string list "(x,x,x)"
-        // @ts-ignore
-        offered_by_name: addonInfo.authors.map(u => u.name).join(', '),
-      });
+      // check for other potential failure cases
+      if (addonInfo.id !== extensionId) {
+        failedExtensionIds.push(extensionId);
+      } else {
+        // build author name strings
+        // (sticking with save format of upstream chrome extension)
+        // TODO: is this the best format for storing names? do we (I) want
+        //  to diverge from the chrome version in storage format?
+        // TODO: handle other locales
+        successfulExtensionIds.push({
+          extension_id: addonInfo.id, // use AMO id instead of local id
+          extension_name: addonInfo.name['en-US'],
+          // author IDs as string list "(x,x,x)"
+          // @ts-ignore
+          developer_name: addonInfo.authors.map(u => u.id).join(', '),
+          developer_website: addonInfo.homepage?.url['en-US'],
+          developer_email: addonInfo.support_email?.['en-US'],
+          // TODO: potentially swap to ID (but that that point,
+          //  should change schema altogether and break w chrome)
+          // author display names as string list "(x,x,x)"
+          // @ts-ignore
+          offered_by_name: addonInfo.authors.map(u => u.name).join(', '),
+        });
+      }
     }
   }
   return {
