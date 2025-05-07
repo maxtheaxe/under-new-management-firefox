@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fakeBrowser } from "wxt/testing";
-import * as background from "./background";
+import * as background from "../background";
 
 describe("handleAlarms", () => {
     beforeEach(() => fakeBrowser.reset());
