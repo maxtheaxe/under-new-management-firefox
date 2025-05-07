@@ -9,3 +9,4 @@ releases/
 .env
 .env.publish
 .junk/
+.aider*
