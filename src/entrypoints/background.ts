@@ -12,6 +12,7 @@ import {
   IChangelogEntry,
   IExtensionDeveloperInformation
 } from "@/utils/interfaces";
+import { getLocaleValue } from "@/utils/locales";
 
 /**
  * Sets up a daily alarm and listener, executes a
@@ -84,20 +85,26 @@ export async function extensionLookup(
         // TODO: is this the best format for storing names? do we (I) want
         //  to diverge from the chrome version in storage format?
         // TODO: handle other locales
+        const defaultLocale = addonInfo.default_locale || 'en-US';
+
         successfulExtensionIds.push({
           extension_id: addonInfo.id, // use AMO id instead of local id
-          extension_name: addonInfo.name['en-US'],
+          extension_name: getLocaleValue(addonInfo, "name", defaultLocale) ?? "",
           // author IDs as string list "(x,x,x)"
           // @ts-ignore
-          developer_name: addonInfo.authors.map(u => u.id).join(', '),
-          developer_website: addonInfo.homepage?.url['en-US'],
-          developer_email: addonInfo.support_email?.['en-US'],
+          developer_name: addonInfo.authors.map((u) => u.id).join(", "),
+          developer_website: addonInfo.homepage?.url
+            ? getLocaleValue(addonInfo.homepage, "url", defaultLocale)
+            : null,
+          developer_email: addonInfo.support_email
+            ? getLocaleValue(addonInfo, "support_email", defaultLocale)
+            : null,
           // TODO: potentially swap to ID (but that that point,
           //  should change schema altogether and break w chrome)
           // author display names as string list "(x,x,x)"
           // @ts-ignore
-          offered_by_name: addonInfo.authors.map(u => u.name).join(', '),
-        });
+          offered_by_name: addonInfo.authors.map((u) => u.name).join(", "),
+        })
       }
     }
   }
