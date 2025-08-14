@@ -89,16 +89,12 @@ export async function extensionLookup(
 
         successfulExtensionIds.push({
           extension_id: addonInfo.id, // use AMO id instead of local id
-          extension_name: getLocaleValue(addonInfo, "name", defaultLocale) ?? "",
+          extension_name: getLocaleValue(addonInfo.name, addonInfo.default_locale) ?? "",
           // author IDs as string list "(x,x,x)"
           // @ts-ignore
           developer_name: addonInfo.authors.map((u) => u.id).join(", "),
-          developer_website: addonInfo.homepage?.url
-            ? getLocaleValue(addonInfo.homepage, "url", defaultLocale)
-            : null,
-          developer_email: addonInfo.support_email
-            ? getLocaleValue(addonInfo, "support_email", defaultLocale)
-            : null,
+          developer_website: getLocaleValue(addonInfo.homepage, addonInfo.default_locale) ?? undefined,
+          developer_email: getLocaleValue(addonInfo.support_email, addonInfo.default_locale) ?? undefined,
           // TODO: potentially swap to ID (but that that point,
           //  should change schema altogether and break w chrome)
           // author display names as string list "(x,x,x)"
