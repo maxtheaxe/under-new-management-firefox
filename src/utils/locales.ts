@@ -1,6 +1,6 @@
 export const getLocaleValue = (
-  localizedString: Record<string, string> | undefined,
-  defaultLocale: string | undefined
+  localizedString: Record<string, string> | undefined | null,
+  defaultLocale?: string
 ) => {
   if (!localizedString) {
     return undefined
