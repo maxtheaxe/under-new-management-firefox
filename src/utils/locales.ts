@@ -1,6 +1,6 @@
 export const getLocaleValue = (
-  localizedString: Record<string, string> | undefined | null,
-  defaultLocale: string | undefined | null
+  localizedString: Record<string, string> | undefined,
+  defaultLocale: string | undefined
 ) => {
   if (!localizedString) {
     return undefined
@@ -18,5 +18,5 @@ export const getLocaleValue = (
   if (locales.length > 0) {
     return localizedString[locales[0]]
   }
-  return null
+  return undefined
 }

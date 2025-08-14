@@ -93,8 +93,8 @@ export async function extensionLookup(
           // author IDs as string list "(x,x,x)"
           // @ts-ignore
           developer_name: addonInfo.authors.map((u) => u.id).join(", "),
-          developer_website: getLocaleValue(addonInfo.homepage, addonInfo.default_locale) ?? undefined,
-          developer_email: getLocaleValue(addonInfo.support_email, addonInfo.default_locale) ?? undefined,
+          developer_website: getLocaleValue(addonInfo.homepage, addonInfo.default_locale),
+          developer_email: getLocaleValue(addonInfo.support_email, addonInfo.default_locale),
           // TODO: potentially swap to ID (but that that point,
           //  should change schema altogether and break w chrome)
           // author display names as string list "(x,x,x)"
