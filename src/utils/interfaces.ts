@@ -31,3 +31,8 @@ export interface ChangelogData {
   updatedData: IChangelogEntry[];
   newLength: number;
 }
+
+export type LocalizedValue = (
+  localizedString: Record<string, string> | undefined | null,
+  defaultLocale?: string
+) => string | undefined | null

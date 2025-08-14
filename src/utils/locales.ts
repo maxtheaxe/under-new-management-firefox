@@ -1,6 +1,8 @@
-export const getLocaleValue = (
-  localizedString: Record<string, string> | undefined | null,
-  defaultLocale?: string
+import { LocalizedValue } from "@/utils/interfaces"
+
+export const getLocaleValue: LocalizedValue = (
+  localizedString,
+  defaultLocale,
 ) => {
   if (!localizedString) {
     return undefined
