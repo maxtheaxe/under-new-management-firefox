@@ -85,8 +85,6 @@ export async function extensionLookup(
         // TODO: is this the best format for storing names? do we (I) want
         //  to diverge from the chrome version in storage format?
         // TODO: handle other locales
-        const defaultLocale = addonInfo.default_locale || 'en-US';
-
         successfulExtensionIds.push({
           extension_id: addonInfo.id, // use AMO id instead of local id
           extension_name: getLocaleValue(addonInfo.name, addonInfo.default_locale) ?? "",
