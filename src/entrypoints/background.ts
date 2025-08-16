@@ -12,7 +12,7 @@ import {
   IChangelogEntry,
   IExtensionDeveloperInformation
 } from "@/utils/interfaces";
-import { getLocaleValue } from "@/utils/locales";
+import { getLocaleUrl, getLocaleValue } from "@/utils/locales";
 
 /**
  * Sets up a daily alarm and listener, executes a
@@ -93,7 +93,7 @@ export async function extensionLookup(
           // author IDs as string list "(x,x,x)"
           // @ts-ignore
           developer_name: addonInfo.authors.map((u) => u.id).join(", "),
-          developer_website: getLocaleValue(addonInfo.homepage, addonInfo.default_locale) ?? undefined,
+          developer_website: getLocaleUrl(addonInfo.homepage, addonInfo.default_locale) ?? undefined,
           developer_email: getLocaleValue(addonInfo.support_email, addonInfo.default_locale) ?? undefined,
           // TODO: potentially swap to ID (but that that point,
           //  should change schema altogether and break w chrome)

@@ -36,3 +36,9 @@ export type LocalizedValue = (
   localizedString: Record<string, string> | undefined | null,
   defaultLocale?: string
 ) => string | undefined | null
+
+export type LocalizedUrl = (
+  localizedUrl: 
+    { url: Record<string, string> } | Record<string, string> | undefined | null,
+  defaultLocale?: string
+) => string | undefined | null
