@@ -56,67 +56,71 @@ export async function extensionLookup(
   const successfulExtensionIds: IExtensionDeveloperInformation[] = [];
   const notFoundExtensionIds = [];
 
-  // TODO: switch to AMO API v4 (which is frozen, v5 could technically change)
-  //  https://mozilla.github.io/addons-server/topics/api/v4_frozen/addons.html#detail
   for (const extensionId of installedExtensionIds) {
-    const response = await fetch(
-      `${apiEndpoint}${extensionId}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    try {
+      const response = await fetch(
+        `${apiEndpoint}${extensionId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    if (response.status === 404) {
-      notFoundExtensionIds.push(extensionId)
-    } else if (response.status === 429) {
-      // rate limit hit so we stop processing further requests
-      console.warn(
-        `Rate limit hit while fetching data for extension ${extensionId}. Further requests stopped`
-      )
-      failedExtensionIds.push(extensionId)
-      break
-    } else if (response.status !== 200) {
-      console.error(
-        `Failed to fetch data for extension ${extensionId}. Status ${response.status}, error ${response.statusText}`
-      )
-      failedExtensionIds.push(extensionId)
-    } else {
-      // valid response
-      const addonInfo: IAMOAddonResponse = await response.json()
-      // check for other potential failure cases
-      if (addonInfo.id !== extensionId) {
+      if (response.status === 404) {
+        console.error(`Extension ${extensionId} not found in AMO`);
+        notFoundExtensionIds.push(extensionId)
+      } else if (response.status === 429) {
+        // rate limit hit so we stop processing further requests
+        console.warn(
+          `Rate limit hit while fetching data for extension ${extensionId}. Further requests stopped`
+        )
+        failedExtensionIds.push(extensionId)
+        break
+      } else if (response.status !== 200) {
+        console.error(
+          `AMO sent a non-200 status for extension ${extensionId}. Status ${response.status}, error ${response.statusText}`
+        )
         failedExtensionIds.push(extensionId)
       } else {
-        // build author name strings
-        // (sticking with save format of upstream chrome extension)
-        successfulExtensionIds.push({
-          extension_id: addonInfo.id, // use AMO id instead of local id
-          extension_name:
-            typeof addonInfo.name === "string"
-              ? addonInfo.name
-              : getLocaleValue(addonInfo.name, addonInfo.default_locale) ?? "",
-          // author IDs as string list "(x,x,x)"
-          developer_name: addonInfo.authors.map((u) => u.id).join(", "),
-          developer_website:
-            typeof addonInfo.homepage === "string"
-              ? addonInfo.homepage
-              : getLocaleUrl(addonInfo.homepage, addonInfo.default_locale) ??
-                undefined,
-          developer_email:
-            typeof addonInfo.support_email === "string"
-              ? addonInfo.support_email
-              : getLocaleValue(
-                  addonInfo.support_email,
-                  addonInfo.default_locale
-                ) ?? undefined,
-          // TODO: potentially swap to ID (but that that point,
-          //  should change schema altogether and break w chrome)
-          // author display names as string list "(x,x,x)"
-          offered_by_name: addonInfo.authors.map((u) => u.name).join(", "),
-        })
+        // valid response
+        const addonInfo: IAMOAddonResponse = await response.json()
+        // check for other potential failure cases
+        if (addonInfo.id !== extensionId) {
+          failedExtensionIds.push(extensionId)
+        } else {
+          // build author name strings
+          // (sticking with save format of upstream chrome extension)
+          successfulExtensionIds.push({
+            extension_id: addonInfo.id, // use AMO id instead of local id
+            extension_name:
+              typeof addonInfo.name === "string"
+                ? addonInfo.name
+                : getLocaleValue(addonInfo.name, addonInfo.default_locale) ?? "",
+            // author IDs as string list "(x,x,x)"
+            developer_name: addonInfo.authors.map((u) => u.id).join(", "),
+            developer_website:
+              typeof addonInfo.homepage === "string"
+                ? addonInfo.homepage
+                : getLocaleUrl(addonInfo.homepage, addonInfo.default_locale) ??
+                  undefined,
+            developer_email:
+              typeof addonInfo.support_email === "string"
+                ? addonInfo.support_email
+                : getLocaleValue(
+                    addonInfo.support_email,
+                    addonInfo.default_locale
+                  ) ?? undefined,
+            // TODO: potentially swap to ID (but that that point,
+            //  should change schema altogether and break w chrome)
+            // author display names as string list "(x,x,x)"
+            offered_by_name: addonInfo.authors.map((u) => u.name).join(", "),
+          })
+        }
       }
+    } catch (error) {
+      console.error(`An error happened while fetching extension ${extensionId}`, error)
+      failedExtensionIds.push(extensionId)
     }
   }
   return {
