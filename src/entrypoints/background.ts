@@ -70,11 +70,20 @@ export async function extensionLookup(
 
     if (response.status === 404) {
       notFoundExtensionIds.push(extensionId)
-    } else if (response.status !== 200) {
-      // TODO: add handling for lookups caused by
-      //  different problems (e.g. rate limit, etc.)
+    } else if (response.status === 429) {
+      // rate limit hit so we stop processing further requests
+      console.warn(
+        `Rate limit hit while fetching data for extension ${extensionId}. Further requests stopped`
+      )
       failedExtensionIds.push(extensionId)
-    } else { // valid response
+      break
+    } else if (response.status !== 200) {
+      console.error(
+        `Failed to fetch data for extension ${extensionId}. Status ${response.status}, error ${response.statusText}`
+      )
+      failedExtensionIds.push(extensionId)
+    } else {
+      // valid response
       const addonInfo: IAMOAddonResponse = await response.json()
       // check for other potential failure cases
       if (addonInfo.id !== extensionId) {
