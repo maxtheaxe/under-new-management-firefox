@@ -8,6 +8,7 @@ import {
 } from "@/utils/consts";
 import {
   ChangelogData,
+  IAMOAddonResponse,
   IApiResponse,
   IChangelogEntry,
   IExtensionDeveloperInformation
@@ -68,35 +69,42 @@ export async function extensionLookup(
     );
 
     if (response.status === 404) {
-      notFoundExtensionIds.push(extensionId);
+      notFoundExtensionIds.push(extensionId)
     } else if (response.status !== 200) {
       // TODO: add handling for lookups caused by
       //  different problems (e.g. rate limit, etc.)
-      failedExtensionIds.push(extensionId);
+      failedExtensionIds.push(extensionId)
     } else { // valid response
-      // TODO: add proper typing for AMO responses (see: ts-ignore below)
-      const addonInfo = await response.json();
+      const addonInfo: IAMOAddonResponse = await response.json()
       // check for other potential failure cases
       if (addonInfo.id !== extensionId) {
-        failedExtensionIds.push(extensionId);
+        failedExtensionIds.push(extensionId)
       } else {
         // build author name strings
         // (sticking with save format of upstream chrome extension)
-        // TODO: is this the best format for storing names? do we (I) want
-        //  to diverge from the chrome version in storage format?
-        // TODO: handle other locales
         successfulExtensionIds.push({
           extension_id: addonInfo.id, // use AMO id instead of local id
-          extension_name: getLocaleValue(addonInfo.name, addonInfo.default_locale) ?? "",
+          extension_name:
+            typeof addonInfo.name === "string"
+              ? addonInfo.name
+              : getLocaleValue(addonInfo.name, addonInfo.default_locale) ?? "",
           // author IDs as string list "(x,x,x)"
-          // @ts-ignore
           developer_name: addonInfo.authors.map((u) => u.id).join(", "),
-          developer_website: getLocaleUrl(addonInfo.homepage, addonInfo.default_locale) ?? undefined,
-          developer_email: getLocaleValue(addonInfo.support_email, addonInfo.default_locale) ?? undefined,
+          developer_website:
+            typeof addonInfo.homepage === "string"
+              ? addonInfo.homepage
+              : getLocaleUrl(addonInfo.homepage, addonInfo.default_locale) ??
+                undefined,
+          developer_email:
+            typeof addonInfo.support_email === "string"
+              ? addonInfo.support_email
+              : getLocaleValue(
+                  addonInfo.support_email,
+                  addonInfo.default_locale
+                ) ?? undefined,
           // TODO: potentially swap to ID (but that that point,
           //  should change schema altogether and break w chrome)
           // author display names as string list "(x,x,x)"
-          // @ts-ignore
           offered_by_name: addonInfo.authors.map((u) => u.name).join(", "),
         })
       }

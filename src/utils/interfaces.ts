@@ -11,6 +11,23 @@ export interface IExtensionDeveloperInformation {
   offered_by_name: string;
 }
 
+export interface IAMOAuthor {
+  id: number
+  name: string
+  url: string
+  username: string
+  picture_url?: string
+}
+
+export interface IAMOAddonResponse {
+  id: string
+  authors: IAMOAuthor[]
+  name: string | { [locale: string]: string }
+  default_locale: string
+  homepage?: string | { [locale: string]: string } | null
+  support_email?: string | { [locale: string]: string } | null
+}
+
 export interface IApiResponse {
   ignored_extension_ids: string[];
   matched_extension_data: IExtensionDeveloperInformation[];
