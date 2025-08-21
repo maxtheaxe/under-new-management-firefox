@@ -1,10 +1,14 @@
-import { LocalizedUrl, LocalizedValue } from "@/utils/interfaces"
+import type { LocalizedUrl, LocalizedValue } from "@/utils/interfaces"
 
 export const getLocaleValue: LocalizedValue = (
   localizedString,
   defaultLocale,
 ) => {
-  if (!localizedString) {
+  if (
+    !localizedString ||
+    typeof localizedString !== "object" ||
+    Array.isArray(localizedString)
+  ) {
     return undefined
   }
   // we use en-US as the first locale
