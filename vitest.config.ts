@@ -4,6 +4,7 @@ import { WxtVitest } from "wxt/testing";
 export default defineConfig({
     plugins: [WxtVitest()],
     test: {
-        environment: "jsdom"
+        environment: "jsdom",
+        setupFiles: "./vitest.setup.ts",
     }
 });
