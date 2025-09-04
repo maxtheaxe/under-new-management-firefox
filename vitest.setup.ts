@@ -23,3 +23,5 @@ class ESBuildAndJSDOMCompatibleTextEncoder extends TextEncoder {
 }
 
 global.TextEncoder = ESBuildAndJSDOMCompatibleTextEncoder
+
+import '@testing-library/jest-dom';
