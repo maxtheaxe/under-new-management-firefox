@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, beforeEach } from "vitest";
 import { fakeBrowser } from "wxt/testing";
 import Popup from "./Popup";
@@ -44,5 +44,21 @@ describe("Popup component", () => {
     expect(await screen.findByText("After")).toBeInTheDocument();
     expect(screen.getByText(/Old Developer/)).toBeInTheDocument();
     expect(screen.getByText(/New Developer/)).toBeInTheDocument();
+  });
+
+  it('should clear the changelog when the clear button is clicked', async () => {
+    // Arrange
+    await browser.storage.local.set({ [CHANGELOG_KEY]: mockChangelog });
+    render(<Popup />);
+    expect(await screen.findByText("Before")).toBeInTheDocument();
+
+    // Act
+    const clearButton = screen.getByRole("button", { name: /CLEAR/i });
+    fireEvent.click(clearButton);
+
+    // Assert
+    expect(await screen.findByText("No changes detected.")).toBeInTheDocument();
+    const clearedChangelog = await browser.storage.local.get(CHANGELOG_KEY);
+    expect(clearedChangelog[CHANGELOG_KEY]).toEqual([]);
   });
 });
