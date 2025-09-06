@@ -4,6 +4,7 @@ import { WxtVitest } from "wxt/testing";
 export default defineConfig({
     plugins: [WxtVitest()],
     test: {
+        globals: true,
         environment: "happy-dom",
         setupFiles: "./vitest.setup.ts",
     }
