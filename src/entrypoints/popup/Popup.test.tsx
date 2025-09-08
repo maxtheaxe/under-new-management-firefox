@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { fakeBrowser } from "wxt/testing";
 import Popup from "./Popup";
 import { CHANGELOG_KEY } from "@/utils/consts";
@@ -30,6 +30,9 @@ const mockChangelog: IChangelogEntry[] = [
 describe("Popup component", () => {
   beforeEach(() => {
     fakeBrowser.reset();
+
+    // the fake browesr library has not implemented setBadgeText  so im just mocking this so vitest stops complaining
+    browser.action.setBadgeText = vi.fn();
   });
 
   it("should display the diff when changelog data is present", async () => {
