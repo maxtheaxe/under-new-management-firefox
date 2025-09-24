@@ -53,6 +53,11 @@ const Popup = () => {
 					onClick={() =>
 						open('https://github.com/maxtheaxe/under-new-management-firefox')
 					}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							open('https://github.com/maxtheaxe/under-new-management-firefox');
+						}
+					}}
 				></img>
 				<div className="flex flex-col flex-grow">
 					<button
@@ -62,6 +67,13 @@ const Popup = () => {
 								'https://github.com/maxtheaxe/under-new-management-firefox#is-this-a-copy-of-under-new-management',
 							)
 						}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								open(
+									'https://github.com/maxtheaxe/under-new-management-firefox#is-this-a-copy-of-under-new-management',
+								);
+							}
+						}}
 						title={'click here!'}
 						type="button"
 					>
