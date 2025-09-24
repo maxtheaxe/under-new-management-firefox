@@ -12,20 +12,20 @@ const Popup = () => {
 	const [lastUpdatedData, setLastUpdatedData] =
 		useState<ILastUpdatedData | null>(null);
 
-	useEffect(() => {
-		updateData();
-
-		browser.storage.local.onChanged.addListener(updateData);
-	}, []);
-
-	async function updateData() {
+	const updateData = useCallback(async () => {
 		updateChangelogData();
 
 		const lastUpdatedData: ILastUpdatedData | null =
 			(await browser.storage.local.get(LAST_CHECK_KEY))[LAST_CHECK_KEY] ?? null;
 
 		setLastUpdatedData(lastUpdatedData);
-	}
+	}, []);
+
+	useEffect(() => {
+		updateData();
+
+		browser.storage.local.onChanged.addListener(updateData);
+	}, [updateData]);
 
 	async function updateChangelogData() {
 		const changelogResult: IChangelogEntry[] =
@@ -48,6 +48,8 @@ const Popup = () => {
 				<img
 					className="w-14 rounded-xl overflow-hidden cursor-pointer"
 					src={logo}
+					alt="Extension logo"
+					aria-label="Extension logo"
 					onClick={() =>
 						open('https://github.com/maxtheaxe/under-new-management-firefox')
 					}
@@ -86,6 +88,7 @@ const Popup = () => {
 					onClick={() =>
 						open('https://github.com/maxtheaxe/under-new-management-firefox')
 					}
+					type="button"
 				>
 					GITHUB
 				</button>
@@ -93,6 +96,7 @@ const Popup = () => {
 				<button
 					className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded border border-red-700"
 					onClick={() => clearChangelog()}
+					type="button"
 				>
 					CLEAR
 				</button>
