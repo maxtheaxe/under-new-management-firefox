@@ -12,6 +12,10 @@
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
     "postinstall": "wxt prepare",
+		"format": "biome format",
+		"format:fix": "biome format --write",
+		"lint": "biome lint",
+		"lint:fix": "biome lint --fix",
     "test": "vitest"
   },
   "repository": {
@@ -32,6 +36,7 @@
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@biomejs/biome": "2.2.4",
     "@types/chrome": "^0.0.280",
     "@types/lodash-es": "^4.17.12",
     "@types/react": "^18.3.12",
