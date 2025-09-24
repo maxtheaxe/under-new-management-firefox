@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CHANGELOG_KEY, LAST_CHECK_KEY } from '@/utils/consts.ts';
 import type { IChangelogEntry, ILastUpdatedData } from '@/utils/interfaces.ts';
 import logo from '../../public/logo-128.png';

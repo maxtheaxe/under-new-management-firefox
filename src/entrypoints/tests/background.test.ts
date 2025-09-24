@@ -7,6 +7,7 @@ describe('handleAlarms', () => {
 
 	it('should create an alarm on invocation', async () => {
 		// Arrange
+		// biome-ignore lint/correctness/noUnusedVariables: leaving this as-is just in case for backwards compatibility
 		const before = await browser.alarms.get('test');
 
 		// Act
@@ -130,7 +131,7 @@ describe('extensionLookup', () => {
 
 	it('should handle a broken response', async () => {
 		// Arrange
-		const fakeFetch = (url_: unknown) => {
+		const fakeFetch = (_url: unknown) => {
 			return new Response('Bad Gateway', { status: 502 });
 		};
 
@@ -153,7 +154,7 @@ describe('extensionLookup', () => {
 			authors: [{ id: 'person' }],
 		};
 
-		const fakeFetch = (url_: unknown) => {
+		const fakeFetch = (_url: unknown) => {
 			return new Response(JSON.stringify(data));
 		};
 
@@ -179,7 +180,7 @@ describe('extensionLookup', () => {
 			authors: [{ id: 'person' }],
 		};
 
-		const fakeFetch = (url_: unknown) => {
+		const fakeFetch = (_url: unknown) => {
 			return new Response(JSON.stringify(data));
 		};
 
