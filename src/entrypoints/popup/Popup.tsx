@@ -55,7 +55,7 @@ const Popup = () => {
 					}
 				></img>
 				<div className="flex flex-col flex-grow">
-					<span
+					<button
 						className="text-red-500 mb-2 cursor-pointer"
 						onClick={() =>
 							open(
@@ -63,9 +63,10 @@ const Popup = () => {
 							)
 						}
 						title={'click here!'}
+						type="button"
 					>
 						visit github to read about the recent branding change
-					</span>
+					</button>
 					<h1 className="text-blue-700 text-2xl">
 						Extension Developer Changelog
 					</h1>
