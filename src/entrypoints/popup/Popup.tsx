@@ -100,7 +100,11 @@ const Popup = () => {
 
 			{changelogData && changelogData.length > 0 ? (
 				changelogData.map((entry: IChangelogEntry) => (
-					<Diff obj1={entry.before} obj2={entry.after}></Diff>
+					<Diff
+						key={`${entry.timestamp}-${entry.before}-${entry.after}`}
+						obj1={entry.before}
+						obj2={entry.after}
+					></Diff>
 				))
 			) : (
 				<span>No changes detected.</span>
